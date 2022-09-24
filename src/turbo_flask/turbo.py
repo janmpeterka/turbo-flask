@@ -53,9 +53,9 @@ class Turbo:
         """
         if url is None:
             url = f'{_CDN}/pin/{_PKG}@{version}/min/{_PKG}.js'
-        ws_route = current_app.config.get('TURBO_WEBSOCKET_ROUTE',
-                                          '/turbo-stream')
-        if ws_route:
+        if ws_route := current_app.config.get(
+            'TURBO_WEBSOCKET_ROUTE', '/turbo-stream'
+        ):
             return Markup(f'''<script type="module">
 import * as Turbo from "{url}";
 Turbo.connectStreamSource(new WebSocket(`ws${{location.protocol.substring(4)}}//${{location.host}}{ws_route}`));
@@ -103,9 +103,7 @@ Turbo.connectStreamSource(new WebSocket(`ws${{location.protocol.substring(4)}}//
                    is ``True`` if there is at least one client listening to
                    updates over WebSocket.
         """
-        if to is None:
-            return self.clients != {}
-        return to in self.clients
+        return self.clients != {} if to is None else to in self.clients
 
     def _make_stream(self, action, content, target):
         return (f'<turbo-stream action="{action}" target="{target}">'

@@ -28,8 +28,7 @@ def after_request(response):
 def index():
     name_error = ''
     if request.method == 'POST':
-        name = request.form['name']
-        if name:
+        if name := request.form['name']:
             flash(f'Hello, {name}!')
             name_error = ''
         else:
